@@ -3,6 +3,7 @@ package com.yevtsy.fifteens.search;
 import com.yevtsy.fifteens.model.Board;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.PriorityQueue;
 import java.util.Queue;
@@ -12,6 +13,10 @@ public class AStarEngine implements SearchEngine {
 
     @Override
     public Collection<Board> search(Board board) {
+        if (!board.isValid()) {
+            // TODO : throw an exception if board is not valid
+        }
+
         Set<Integer> closed = new HashSet<>();
         Queue<Board> open = new PriorityQueue<>(); // TODO : put here comparator or define it for Board object ?
 
@@ -37,13 +42,13 @@ public class AStarEngine implements SearchEngine {
                     open.add(neighbor);
                     neighbor.parent(current);
                     neighbor.updatePassedCost(g);
-                }
-
-                if (g < neighbor.passedCost()) {
+                } else if (g < neighbor.passedCost()) {
                     neighbor.parent(current);
                     neighbor.updatePassedCost(g);
                 }
             }
         }
+
+        return Collections.emptyList();
     }
 }
