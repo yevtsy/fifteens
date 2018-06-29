@@ -21,3 +21,18 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+.gradle/
+.idea/checkstyle-idea.xml
+.idea/compiler.xml
+.idea/encodings.xml
+.idea/gradle.xml
+.idea/misc.xml
+.idea/modules/
+.idea/sonarlint/
+.idea/thriftCompiler.xml
+.idea/workspace.xml
+build/
+gradle/
+gradlew
+gradlew.bat
