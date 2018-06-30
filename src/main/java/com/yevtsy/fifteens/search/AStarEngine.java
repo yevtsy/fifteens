@@ -1,5 +1,6 @@
 package com.yevtsy.fifteens.search;
 
+import com.yevtsy.fifteens.comparators.AStarBoardComparator;
 import com.yevtsy.fifteens.model.Board;
 
 import java.util.Collection;
@@ -18,10 +19,9 @@ public class AStarEngine implements SearchEngine {
         }
 
         Set<Integer> closed = new HashSet<>();
-        Queue<Board> open = new PriorityQueue<>(); // TODO : put here comparator or define it for Board object ?
+        Queue<Board> open = new PriorityQueue<>(new AStarBoardComparator());
 
         open.add(board);
-        board.updatePassedCost(0);
 
         while (!open.isEmpty()) {
             Board current = open.poll();
@@ -29,7 +29,7 @@ public class AStarEngine implements SearchEngine {
                 return current.moves();
             }
 
-            closed.add(current.hashCode()); // TODO : imeplement hash code properly
+            closed.add(current.hashCode());
 
             final Iterable<Board> neighbors = current.neighbors();
             for (Board neighbor : neighbors) {
@@ -37,15 +37,14 @@ public class AStarEngine implements SearchEngine {
                     continue;
                 }
 
-                int g = current.passedCost() + 1;
+//                int g = current.passedCost() + 1;
                 if (!open.contains(neighbor)) {
                     open.add(neighbor);
                     neighbor.parent(current);
-                    neighbor.updatePassedCost(g);
-                } else if (g < neighbor.passedCost()) {
-                    neighbor.parent(current);
-                    neighbor.updatePassedCost(g);
                 }
+//                else if (g < neighbor.passedCost()) {
+//                    neighbor.parent(current);
+//                }
             }
         }
 

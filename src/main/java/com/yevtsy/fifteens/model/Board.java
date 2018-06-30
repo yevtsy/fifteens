@@ -12,8 +12,6 @@ public interface Board {
 
     int passedCost();
 
-    void updatePassedCost(int cost);
-
     int heuristic();
 
     boolean isValid();
