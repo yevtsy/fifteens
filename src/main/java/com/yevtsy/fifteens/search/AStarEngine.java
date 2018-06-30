@@ -15,7 +15,7 @@ public class AStarEngine implements SearchEngine {
     @Override
     public Collection<Board> search(Board board) {
         if (!board.isValid()) {
-            // TODO : throw an exception if board is not valid
+            throw new IllegalArgumentException("Board " + board + " has invalid data or cannot be solved");
         }
 
         Set<Integer> closed = new HashSet<>();

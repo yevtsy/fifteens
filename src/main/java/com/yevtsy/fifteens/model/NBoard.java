@@ -100,7 +100,7 @@ public class NBoard implements Board {
 
     @Override
     public boolean isValid() {
-        return false; // TODO : implement it
+        return isFilledCorrectly() && isSolvable();
     }
 
     @Override
@@ -117,11 +117,7 @@ public class NBoard implements Board {
 
     @Override
     public String toString() {
-        if (currentField == null) {
-            return "" + null;
-        }
-        StringBuffer sbf;
-        sbf = new StringBuffer(currentField.length);
+        StringBuilder sbf = new StringBuilder(currentField.length);
         for (int i = 0; i < sideSize; i++) {
             for (int j = 0; j < sideSize; j++) {
                 sbf.append(currentField[j + i * sideSize]);
@@ -153,5 +149,47 @@ public class NBoard implements Board {
         }
 
         return h;
+    }
+
+    private boolean isSolvable() {
+        int invCount = 0;
+        int blankPos = 0;
+
+        for (int i = 0; i < currentField.length; i++) {
+            if (currentField[i] == 0) {
+                blankPos = i / sideSize + 1;
+            }
+
+            if (i == 0)
+                continue;
+
+            for (int j = i + 1; j < currentField.length; j++) {
+                if (currentField[j] < currentField[i]) {
+                    invCount++;
+                }
+            }
+        }
+
+        invCount = invCount + blankPos;
+        return (invCount & 1) == 0;
+    }
+
+    private boolean isFilledCorrectly() {
+        int size = sideSize * sideSize;
+        byte[] counts = new byte[size];
+        for (byte value : currentField) {
+            if (value < 0 || value > size - 1) {
+                return false;
+            }
+            counts[value] += 1;
+        }
+
+        for (byte count : counts) {
+            if (count != 1) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

@@ -19,4 +19,44 @@ public class FifteenthPuzzleFileTest extends FifteensPuzzleTest {
         final Collection<Board> moves = search.search(new NBoard(board._1, board._2));
         moves.forEach(System.out::println);
     }
+
+    @Test
+    public void test2() throws IOException {
+        final Tuple2<Byte, byte[]> board = parseBoard("puzzle02.txt");
+        SearchEngine search = new AStarEngine();
+        final Collection<Board> moves = search.search(new NBoard(board._1, board._2));
+        moves.forEach(System.out::println);
+    }
+
+    @Test
+    public void test3() throws IOException {
+        final Tuple2<Byte, byte[]> board = parseBoard("puzzle03.txt");
+        SearchEngine search = new AStarEngine();
+        final Collection<Board> moves = search.search(new NBoard(board._1, board._2));
+        moves.forEach(System.out::println);
+    }
+
+    @Test
+    public void test4() throws IOException {
+        final Tuple2<Byte, byte[]> board = parseBoard("puzzle04.txt");
+        SearchEngine search = new AStarEngine();
+        final Collection<Board> moves = search.search(new NBoard(board._1, board._2));
+        moves.forEach(System.out::println);
+    }
+
+    @Test
+    public void test5() throws IOException {
+        final Tuple2<Byte, byte[]> board = parseBoard("puzzle05.txt");
+        SearchEngine search = new AStarEngine();
+        final Collection<Board> moves = search.search(new NBoard(board._1, board._2));
+        moves.forEach(System.out::println);
+    }
+
+    @Test
+    public void test6() throws IOException {
+        final Tuple2<Byte, byte[]> board = parseBoard("puzzle06.txt");
+        SearchEngine search = new AStarEngine();
+        final Collection<Board> moves = search.search(new NBoard(board._1, board._2));
+        moves.forEach(System.out::println);
+    }
 }

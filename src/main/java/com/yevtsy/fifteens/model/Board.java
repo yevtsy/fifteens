@@ -10,13 +10,13 @@ public interface Board {
 
     Iterable<Board> neighbors();
 
-    int passedCost();
-
-    int heuristic();
-
     boolean isValid();
 
     boolean isTerminated();
 
     Collection<Board> moves();
+
+    int passedCost();
+
+    int heuristic();
 }
