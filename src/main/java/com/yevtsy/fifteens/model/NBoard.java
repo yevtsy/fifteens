@@ -66,7 +66,6 @@ public class NBoard implements Board {
     public Iterable<Board> neighbors() {
         List<Board> neighbors = new ArrayList<>();
         for (byte neighborIndex : neighborIndexes) {
-
             int blank = 0;
             for (; blank < currentField.length; blank++) {
                 if (currentField[blank] == 0) {
@@ -75,27 +74,28 @@ public class NBoard implements Board {
             }
 
             int next = blank + neighborIndex;
+            if (canMove(neighborIndex, blank, next)) {
+                byte[] neighborField = Arrays.copyOf(currentField, currentField.length);
+                byte temp = neighborField[blank];
+                neighborField[blank] = neighborField[next];
+                neighborField[next] = temp;
 
-            // TODO : validations should be separate AND remove continue statements
-            if (next < 0 || next >= currentField.length) {
-                continue;
+                neighbors.add(new NBoard(sideSize, neighborField, g + 1));
             }
-            // TODO : check WTF below
-            if ((neighborIndex == 1) && ((blank + 1) % sideSize == 0)) {
-                continue;
-            }
-            if ((neighborIndex == -1) && ((blank + 1) % sideSize == 1)) {
-                continue;
-            }
-
-            byte[] neighborField = Arrays.copyOf(currentField, currentField.length);
-            byte temp = neighborField[blank];
-            neighborField[blank] = neighborField[next];
-            neighborField[next] = temp;
-
-            neighbors.add(new NBoard(sideSize, neighborField, g + 1));
         }
         return neighbors;
+    }
+
+    private boolean canMove(byte neighborIndex, int blank, int next) {
+        if (next < 0 || next >= currentField.length) {
+            return false;
+        }
+        // TODO : check WTF below
+        if ((neighborIndex == 1) && ((blank + 1) % sideSize == 0)) {
+            return false;
+        }
+
+        return (neighborIndex != -1) || ((blank + 1) % sideSize != 1);
     }
 
     @Override
@@ -151,27 +151,62 @@ public class NBoard implements Board {
         return h;
     }
 
+//    private boolean isSolvable() {
+//        int invCount = 0;
+//        int blankPos = 0;
+//
+//        for (int i = 0; i < currentField.length; i++) {
+//            if (currentField[i] == 0) {
+//                blankPos = i / sideSize + 1;
+//            }
+//
+//            if (i == 0)
+//                continue;
+//
+//            for (int j = i + 1; j < currentField.length; j++) {
+//                if (currentField[j] < currentField[i]) {
+//                    invCount++;
+//                }
+//            }
+//        }
+//
+//        invCount = invCount + blankPos;
+//        return (invCount & 1) == 0;
+//    }
+
     private boolean isSolvable() {
-        int invCount = 0;
-        int blankPos = 0;
+        int parity = 0;
+        int gridWidth = (int) Math.sqrt(currentField.length);
+        int row = 0; // the current row we are on
+        int blankRow = 0; // the row with the blank tile
 
-        for (int i = 0; i < currentField.length; i++) {
-            if (currentField[i] == 0) {
-                blankPos = i / sideSize + 1;
+        for (int i = 0; i < currentField.length; i++)
+        {
+            if (i % gridWidth == 0) { // advance to next row
+                row++;
             }
-
-            if (i == 0)
+            if (currentField[i] == 0) { // the blank tile
+                blankRow = row; // save the row on which encountered
                 continue;
-
-            for (int j = i + 1; j < currentField.length; j++) {
-                if (currentField[j] < currentField[i]) {
-                    invCount++;
+            }
+            for (int j = i + 1; j < currentField.length; j++)
+            {
+                if (currentField[i] > currentField[j] && currentField[j] != 0)
+                {
+                    parity++;
                 }
             }
         }
 
-        invCount = invCount + blankPos;
-        return (invCount & 1) == 0;
+        if (gridWidth % 2 == 0) { // even grid
+            if (blankRow % 2 == 0) { // blank on odd row; counting from bottom
+                return parity % 2 == 0;
+            } else { // blank on even row; counting from bottom
+                return parity % 2 != 0;
+            }
+        } else { // odd grid
+            return parity % 2 == 0;
+        }
     }
 
     private boolean isFilledCorrectly() {
