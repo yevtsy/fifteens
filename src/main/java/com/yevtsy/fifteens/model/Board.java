@@ -8,7 +8,7 @@ public interface Board {
 
     void parent(Board parent);
 
-    Iterable<Board> neighbors();
+    Collection<Board> neighbors();
 
     boolean isValid();
 

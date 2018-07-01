@@ -17,34 +17,38 @@ public class FifteenPuzzleRandomShuffledTest extends FifteensPuzzleTest {
 
     @DataProvider(name = "boards")
     Object[][] threeSideFieldProvider() {
-        final int threeSideSize = 3;
-        Board terminatedThreeSide = new NBoard(threeSideSize, init(threeSideSize));
+        final int threeSide = 3;
+        final byte[] fieldThree = initializeField(threeSide);
+        Board terminatedThreeSide = new NBoard(threeSide, fieldThree);
 
-        final int fourSideSize = 4;
-        Board terminatedFourSide = new NBoard(fourSideSize, init(fourSideSize));
+        final int fourSide = 4;
+        final byte[] fieldFour = initializeField(fourSide);
+        Board terminatedFourSide = new NBoard(fourSide, fieldFour);
 
         return new Object[][] {
-                {threeSideSize, shuffle(threeSideSize, 3), terminatedThreeSide},
-                {threeSideSize, shuffle(threeSideSize, 5), terminatedThreeSide},
-                {threeSideSize, shuffle(threeSideSize, 10), terminatedThreeSide},
-                {threeSideSize, shuffle(threeSideSize, 15), terminatedThreeSide},
-                {threeSideSize, shuffle(threeSideSize, 20), terminatedThreeSide},
-                {threeSideSize, shuffle(threeSideSize, 25), terminatedThreeSide},
-                {threeSideSize, shuffle(threeSideSize, 30), terminatedThreeSide},
+                {shuffleBoard(fieldThree, threeSide, 3), terminatedThreeSide},
+                {shuffleBoard(fieldThree, threeSide, 5), terminatedThreeSide},
+                {shuffleBoard(fieldThree, threeSide, 10), terminatedThreeSide},
+                {shuffleBoard(fieldThree, threeSide, 20), terminatedThreeSide},
+                {shuffleBoard(fieldThree, threeSide, 30), terminatedThreeSide},
+                {shuffleBoard(fieldThree, threeSide, 40), terminatedThreeSide},
+                {shuffleBoard(fieldThree, threeSide, 50), terminatedThreeSide},
+                {shuffleBoard(fieldThree, threeSide, 60), terminatedThreeSide},
 
-                {fourSideSize, shuffle(fourSideSize, 3), terminatedFourSide},
-                {fourSideSize, shuffle(fourSideSize, 5), terminatedFourSide},
-                {fourSideSize, shuffle(fourSideSize, 10), terminatedFourSide},
-                {fourSideSize, shuffle(fourSideSize, 15), terminatedFourSide},
-                {fourSideSize, shuffle(fourSideSize, 20), terminatedFourSide},
-                {fourSideSize, shuffle(fourSideSize, 25), terminatedFourSide},
-                {fourSideSize, shuffle(fourSideSize, 30), terminatedFourSide}
+                {shuffleBoard(fieldFour, fourSide, 3), terminatedFourSide},
+                {shuffleBoard(fieldFour, fourSide, 5), terminatedFourSide},
+                {shuffleBoard(fieldFour, fourSide, 10), terminatedFourSide},
+                {shuffleBoard(fieldFour, fourSide, 20), terminatedFourSide},
+                {shuffleBoard(fieldFour, fourSide, 30), terminatedFourSide},
+                {shuffleBoard(fieldFour, fourSide, 40), terminatedFourSide},
+                {shuffleBoard(fieldFour, fourSide, 50), terminatedFourSide},
+                {shuffleBoard(fieldFour, fourSide, 60), terminatedFourSide}
         };
     }
 
     @Test(dataProvider = "boards")
-    public void shuffledBoardTest(int sideSize, byte[] field, Board terminated) {
-        List<Board> transformations = new ArrayList<>(engine.search(new NBoard(sideSize, field)));
+    public void shuffledBoardTest(Board current, Board terminated) {
+        List<Board> transformations = new ArrayList<>(engine.search(current));
         Assert.assertEquals(transformations.get(transformations.size() - 1), terminated);
     }
 }

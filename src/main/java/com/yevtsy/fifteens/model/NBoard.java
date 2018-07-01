@@ -18,8 +18,8 @@ public class NBoard implements Board {
     private byte[] currentField;
     private byte[] initialField;
     private int sideSize;
-    @EqualsAndHashCode.Include
     private int h;
+    private boolean isSolvable;
 
     public NBoard(int sideSize, byte[] field) {
         this.sideSize = sideSize;
@@ -27,6 +27,7 @@ public class NBoard implements Board {
         this.currentField = field;
         this.initialField = init();
         this.h = calculateHeuristic();
+        this.isSolvable = isFilledCorrectly() && isSolvable();
     }
 
     @Override
@@ -51,7 +52,7 @@ public class NBoard implements Board {
 
     @Override
     public boolean isValid() {
-        return isFilledCorrectly() && isSolvable();
+        return isSolvable;
     }
 
     @Override
@@ -67,11 +68,11 @@ public class NBoard implements Board {
     }
 
     @Override
-    public Iterable<Board> neighbors() {
+    public Collection<Board> neighbors() {
         List<Board> neighbors = new ArrayList<>();
         for (byte step : steps) {
             int blank = 0;
-            for (; blank < currentField.length; blank++) {
+            for (; blank < currentField.length; ++blank) {
                 if (currentField[blank] == 0) {
                     break;
                 }
@@ -103,16 +104,16 @@ public class NBoard implements Board {
         return sbf.toString();
     }
 
-    private boolean canMove(byte neighborIndex, int blank, int next) {
+    private boolean canMove(byte step, int blank, int next) {
         if (next < 0 || next >= currentField.length) {
             return false;
         }
-        // TODO : check WTF below
-        if ((neighborIndex == 1) && ((blank + 1) % sideSize == 0)) {
+
+        if ((step == 1) && ((blank + 1) % sideSize == 0)) {
             return false;
         }
 
-        return (neighborIndex != -1) || ((blank + 1) % sideSize != 1);
+        return (step != -1) || ((blank + 1) % sideSize != 1);
     }
 
     private byte[] init() {
@@ -141,43 +142,21 @@ public class NBoard implements Board {
         return heuristic;
     }
 
-//    private boolean isSolvable() {
-//        int invCount = 0;
-//        int blankPos = 0;
-//
-//        for (int i = 0; i < currentField.length; i++) {
-//            if (currentField[i] == 0) {
-//                blankPos = i / sideSize + 1;
-//            }
-//
-//            if (i == 0)
-//                continue;
-//
-//            for (int j = i + 1; j < currentField.length; j++) {
-//                if (currentField[j] < currentField[i]) {
-//                    invCount++;
-//                }
-//            }
-//        }
-//
-//        invCount = invCount + blankPos;
-//        return (invCount & 1) == 0;
-//    }
-
     private boolean isSolvable() {
         int parity = 0;
-        int gridWidth = (int) Math.sqrt(currentField.length);
-        int row = 0; // the current row we are on
-        int blankRow = 0; // the row with the blank tile
+        int row = 0;
+        int blankRow = 0;
 
         for (int i = 0; i < currentField.length; i++) {
-            if (i % gridWidth == 0) { // advance to next row
+            if (i % sideSize == 0) {
                 row++;
             }
-            if (currentField[i] == 0) { // the blank tile
-                blankRow = row; // save the row on which encountered
+
+            if (currentField[i] == 0) {
+                blankRow = row;
                 continue;
             }
+
             for (int j = i + 1; j < currentField.length; j++) {
                 if (currentField[i] > currentField[j] && currentField[j] != 0) {
                     parity++;
@@ -185,31 +164,20 @@ public class NBoard implements Board {
             }
         }
 
-        if (gridWidth % 2 == 0) { // even grid
-            if (blankRow % 2 == 0) { // blank on odd row; counting from bottom
-                return parity % 2 == 0;
-            } else { // blank on even row; counting from bottom
-                return parity % 2 != 0;
-            }
-        } else { // odd grid
-            return parity % 2 == 0;
-        }
+        return sideSize % 2 == 0
+                ? blankRow % 2 == 0 ? parity % 2 == 0 : parity % 2 != 0
+                : parity % 2 == 0;
     }
 
     private boolean isFilledCorrectly() {
         int size = sideSize * sideSize;
         byte[] counts = new byte[size];
+
         for (byte value : currentField) {
-            if (value < 0 || value > size - 1) {
+            if (value < 0 || value > size - 1 || counts[value] > 1) {
                 return false;
             }
             counts[value] += 1;
-        }
-
-        for (byte count : counts) {
-            if (count != 1) {
-                return false;
-            }
         }
 
         return true;

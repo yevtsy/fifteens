@@ -1,5 +1,9 @@
 package com.yevtsy.fifteens;
 
+import com.yevtsy.fifteens.model.Board;
+import com.yevtsy.fifteens.model.NBoard;
+import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
+import it.unimi.dsi.fastutil.ints.IntSet;
 import javaslang.Tuple;
 import javaslang.Tuple2;
 
@@ -7,8 +11,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.Random;
+import java.util.Optional;
 
 public abstract class FifteensPuzzleTest {
 
@@ -31,57 +34,29 @@ public abstract class FifteensPuzzleTest {
         return Tuple.of(size, field);
     }
 
-    protected byte[] shuffle(int sideSize, int shuffleCount) {
-        int moves = shuffleCount;
-        byte[] startState = init(sideSize);
+    protected Board shuffleBoard(byte[] field, int sideSize, int count) {
+        int moves = count;
+        final NBoard initialBoard = new NBoard(sideSize, field);
+        Board shuffled = initialBoard;
 
-        int[] neighbors = {-sideSize, sideSize, -1, 1};
-        Random r = new Random();
+        IntSet markedBoards = new IntOpenHashSet();
+        markedBoards.add(shuffled.hashCode());
+
         while (moves > 0) {
-            int j = r.nextInt(neighbors.length);
-            byte[] state = moveNext(startState, neighbors[j], sideSize);
-            if (state != null) {
-                startState = state;
-                moves--;
+            final Optional<Board> board = shuffled.neighbors().stream().filter(b -> !markedBoards.contains(b.hashCode())).findAny();
+            if (!board.isPresent()) {
+                return shuffled;
             }
+
+            markedBoards.add(board.hashCode());
+            shuffled = board.get();
+            moves--;
         }
-        return startState;
+
+        return shuffled;
     }
 
-    private byte[] moveNext(byte[] startState, int neighborIndex, int sideSize) {
-        int blank = 0;
-        for (; blank < startState.length; blank++) {
-            if (startState[blank] == 0) {
-                break;
-            }
-        }
-
-        int next = blank + neighborIndex;
-        if (canMove(startState, (byte) neighborIndex, blank, next, sideSize)) {
-            byte[] neighborField = Arrays.copyOf(startState, startState.length);
-            byte temp = neighborField[blank];
-            neighborField[blank] = neighborField[next];
-            neighborField[next] = temp;
-
-            return neighborField;
-        }
-
-        return null;
-    }
-
-    private boolean canMove(byte[] startState, byte neighborIndex, int blank, int next, int sideSize) {
-        if (next < 0 || next >= startState.length) {
-            return false;
-        }
-        // TODO : check WTF below
-        if ((neighborIndex == 1) && ((blank + 1) % sideSize == 0)) {
-            return false;
-        }
-
-        return (neighborIndex != -1) || ((blank + 1) % sideSize != 1);
-    }
-
-    protected byte[] init(int sideSize) {
+    protected byte[] initializeField(int sideSize) {
         int size = sideSize * sideSize;
         byte[] original = new byte[size];
 

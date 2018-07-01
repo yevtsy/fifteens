@@ -16,10 +16,10 @@ public class UnsolvableFifteenthPuzzleTest extends FifteensPuzzleTest {
     @DataProvider(name = "unresolvableBoards")
     Object[][] unresolvableBoards() {
         return new Object[][]{
-                {"unresolvable/puzzle01.txt"},
-                {"unresolvable/puzzle02.txt"},
-                {"unresolvable/puzzle03.txt"},
-                {"unresolvable/puzzle04.txt"}
+                {"boards/invalid/puzzle01.txt"},
+                {"boards/invalid/puzzle02.txt"},
+                {"boards/invalid/puzzle03.txt"},
+                {"boards/invalid/puzzle04.txt"}
         };
     }
 
