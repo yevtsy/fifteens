@@ -16,7 +16,5 @@ public interface Board {
 
     Collection<Board> moves();
 
-    int passedCost();
-
     int heuristic();
 }

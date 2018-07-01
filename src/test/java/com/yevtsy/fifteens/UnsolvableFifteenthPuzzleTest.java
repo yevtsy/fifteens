@@ -19,9 +19,7 @@ public class UnsolvableFifteenthPuzzleTest extends FifteensPuzzleTest {
                 {"unresolvable/puzzle01.txt"},
                 {"unresolvable/puzzle02.txt"},
                 {"unresolvable/puzzle03.txt"},
-                {"unresolvable/puzzle04.txt"},
-//                {"unresolvable/puzzle05.txt"},
-//                {"unresolvable/puzzle06.txt"}
+                {"unresolvable/puzzle04.txt"}
         };
     }
 

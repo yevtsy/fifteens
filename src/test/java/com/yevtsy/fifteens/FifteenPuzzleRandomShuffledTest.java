@@ -15,13 +15,14 @@ public class FifteenPuzzleRandomShuffledTest extends FifteensPuzzleTest {
 
     private SearchEngine engine = new AStarEngine();
 
-    @DataProvider(name = "Boards")
+    @DataProvider(name = "boards")
     Object[][] threeSideFieldProvider() {
         final int threeSideSize = 3;
         Board terminatedThreeSide = new NBoard(threeSideSize, init(threeSideSize));
 
         final int fourSideSize = 4;
         Board terminatedFourSide = new NBoard(fourSideSize, init(fourSideSize));
+
         return new Object[][] {
                 {threeSideSize, shuffle(threeSideSize, 3), terminatedThreeSide},
                 {threeSideSize, shuffle(threeSideSize, 5), terminatedThreeSide},
@@ -41,7 +42,7 @@ public class FifteenPuzzleRandomShuffledTest extends FifteensPuzzleTest {
         };
     }
 
-    @Test(dataProvider = "Boards")
+    @Test(dataProvider = "boards")
     public void shuffledBoardTest(int sideSize, byte[] field, Board terminated) {
         List<Board> transformations = new ArrayList<>(engine.search(new NBoard(sideSize, field)));
         Assert.assertEquals(transformations.get(transformations.size() - 1), terminated);
