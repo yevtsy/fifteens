@@ -8,21 +8,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Collection;
-import java.util.stream.Stream;
 
 public class FifteensPuzzle {
 
     public static void main(String[] args) throws IOException {
-        StringBuilder contentBuilder = new StringBuilder("\n");
-        try (Stream<String> stream = Files.lines(Paths.get(FifteensPuzzle.class.getClassLoader()
-                .getResource("readme").getFile()), StandardCharsets.UTF_8)) {
-            stream.forEach(s -> contentBuilder.append(s).append('\n'));
-        }
-        System.out.println(contentBuilder);
+        System.out.println(readme());
 
         try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
              PrintStream out = new PrintStream(System.out, true)) {
@@ -45,5 +36,24 @@ public class FifteensPuzzle {
             final Collection<Board> transformations = new AStarEngine(new NBoard(side, field)).run();
             transformations.forEach(System.out::println);
         }
+    }
+
+    private static String readme() {
+        return '\n' +
+                "Fifteens puzzle\n" +
+                "-----------------------------\n" +
+                '\n' +
+                "Syntax\n" +
+                "-----------------------------\n" +
+                "side size   ->    the size of board side\n" +
+                "field       ->    representation of the board. Input in one line: 1 0 2 3 5 6 7 4 9 10 11 8 13 14 15 12\n" +
+                "                  with space as a delimiter\n" +
+                '\n' +
+                "Example of the initial state of the field\n" +
+                "-----------------------------\n" +
+                "1\t0\t2\t3\n" +
+                "5\t6\t7\t4\n" +
+                "9\t10\t11\t8\n" +
+                "13\t14\t15\t12";
     }
 }

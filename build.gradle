@@ -17,6 +17,12 @@ dependencies {
     testCompile 'org.testng:testng:6.11'
 }
 
+jar {
+    manifest {
+        attributes 'Main-Class': 'com.yevtsy.fifteens.FifteensPuzzle'
+    }
+}
+
 test {
     useTestNG {}
 }

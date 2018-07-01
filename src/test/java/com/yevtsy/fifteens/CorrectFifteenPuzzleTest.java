@@ -24,23 +24,23 @@ public class CorrectFifteenPuzzleTest extends FifteensPuzzleTest {
         return new Object[][]{
                 {"boards/valid/puzzle01.txt", terminatedThreeSide},
                 {"boards/valid/puzzle02.txt", terminatedThreeSide},
-                {"boards/valid/puzzle34.txt", terminatedThreeSide},
-                {"boards/valid/puzzle35.txt", terminatedThreeSide},
-                {"boards/valid/puzzle36.txt", terminatedThreeSide},
+                {"boards/valid/puzzle06.txt", terminatedThreeSide},
+                {"boards/valid/puzzle07.txt", terminatedThreeSide},
+                {"boards/valid/puzzle08.txt", terminatedThreeSide},
 
                 {"boards/valid/puzzle03.txt", terminatedFourSide},
-                {"boards/valid/puzzle42.txt", terminatedFourSide},
-                {"boards/valid/puzzle43.txt", terminatedFourSide},
-                {"boards/valid/puzzle44.txt", terminatedFourSide},
-                {"boards/valid/puzzle45.txt", terminatedFourSide},
-//                {"boards/valid/puzzle46.txt", terminatedFourSide},
-                {"boards/valid/puzzle47.txt", terminatedFourSide},
-//                {"boards/valid/puzzle48.txt", terminatedFourSide},
-                {"boards/valid/puzzle49.txt", terminatedFourSide},
-//                {"boards/valid/puzzle05.txt", terminatedFourSide},
-                {"boards/valid/puzzle06.txt", terminatedFourSide},
+                {"boards/valid/puzzle09.txt", terminatedFourSide},
+                {"boards/valid/puzzle10.txt", terminatedFourSide},
+                {"boards/valid/puzzle11.txt", terminatedFourSide},
+                {"boards/valid/puzzle12.txt", terminatedFourSide},
+//                {"boards/valid/puzzle13.txt", terminatedFourSide},
+                {"boards/valid/puzzle14.txt", terminatedFourSide},
+//                {"boards/valid/puzzle15.txt", terminatedFourSide},
+                {"boards/valid/puzzle16.txt", terminatedFourSide},
+//                {"boards/valid/puzzle04.txt", terminatedFourSide},
+                {"boards/valid/puzzle05.txt", terminatedFourSide},
 
-                {"boards/valid/puzzle51.txt", terminatedFiveSide},
+                {"boards/valid/puzzle17.txt", terminatedFiveSide},
         };
     }
 
