@@ -18,7 +18,6 @@ public class NBoard implements Board {
     private byte[] currentField;
     private byte[] initialField;
     private int sideSize;
-    private int h;
     private boolean isSolvable;
 
     public NBoard(int sideSize, byte[] field) {
@@ -26,18 +25,12 @@ public class NBoard implements Board {
         this.steps = new byte[]{(byte) -sideSize, (byte) sideSize, -1, 1};
         this.currentField = field;
         this.initialField = init();
-        this.h = calculateHeuristic();
         this.isSolvable = isFilledCorrectly() && isSolvable();
     }
 
     @Override
-    public Board parent() {
-        return parent;
-    }
-
-    @Override
-    public int heuristic() {
-        return h;
+    public byte[] state() {
+        return Arrays.copyOf(currentField, currentField.length);
     }
 
     @Override
@@ -61,7 +54,7 @@ public class NBoard implements Board {
         Board current = this;
         while (current != null) {
             path.push(current);
-            current = current.parent();
+            current = ((NBoard) current).parent;
         }
 
         return path;
@@ -126,20 +119,6 @@ public class NBoard implements Board {
 
         original[size - 1] = 0;
         return original;
-    }
-
-    private int calculateHeuristic() {
-        int heuristic = 0;
-        for (int i = 0; i < sideSize; i++)
-            for (int j = 0; j < sideSize; j++) {
-                if (currentField[i * sideSize + j] == 0)
-                    continue;
-                int x = (currentField[i * sideSize + j] - 1) / sideSize;
-                int y = (currentField[i * sideSize + j] - 1) % sideSize;
-                heuristic += (Math.abs(x - i) + Math.abs(y - j));
-            }
-
-        return heuristic;
     }
 
     private boolean isSolvable() {

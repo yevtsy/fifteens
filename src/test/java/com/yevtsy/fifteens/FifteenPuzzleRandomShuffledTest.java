@@ -3,7 +3,6 @@ package com.yevtsy.fifteens;
 import com.yevtsy.fifteens.model.Board;
 import com.yevtsy.fifteens.model.NBoard;
 import com.yevtsy.fifteens.search.AStarEngine;
-import com.yevtsy.fifteens.search.SearchEngine;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -12,8 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FifteenPuzzleRandomShuffledTest extends FifteensPuzzleTest {
-
-    private SearchEngine engine = new AStarEngine();
 
     @DataProvider(name = "boards")
     Object[][] threeSideFieldProvider() {
@@ -48,7 +45,7 @@ public class FifteenPuzzleRandomShuffledTest extends FifteensPuzzleTest {
 
     @Test(dataProvider = "boards")
     public void shuffledBoardTest(Board current, Board terminated) {
-        List<Board> transformations = new ArrayList<>(engine.search(current));
+        List<Board> transformations = new ArrayList<>(new AStarEngine(current).run());
         Assert.assertEquals(transformations.get(transformations.size() - 1), terminated);
     }
 }

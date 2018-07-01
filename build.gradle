@@ -16,3 +16,7 @@ dependencies {
     compile 'it.unimi.dsi:fastutil:8.1.0'
     testCompile 'org.testng:testng:6.11'
 }
+
+test {
+    useTestNG {}
+}

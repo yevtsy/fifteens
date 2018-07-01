@@ -5,5 +5,15 @@ import com.yevtsy.fifteens.model.Board;
 import java.util.Collection;
 
 public interface SearchEngine {
-    Collection<Board> search(Board board);
+
+    /**
+     * Start an execution to solve the task
+     */
+    Collection<Board> run();
+
+    /**
+     * Return admissible heuristic of this board.
+     * For example, Hamming or Manhattan distances
+     */
+    int heuristic(Board board);
 }

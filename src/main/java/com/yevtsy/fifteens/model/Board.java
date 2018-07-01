@@ -4,17 +4,34 @@ import java.util.Collection;
 
 public interface Board {
 
-    Board parent();
+    /**
+     * Returns internal representation of board
+     */
+    byte[] state();
 
+    /**
+     * Set parent board to represent parent-child relationship
+     */
     void parent(Board parent);
 
-    Collection<Board> neighbors();
-
-    boolean isValid();
-
-    boolean isTerminated();
-
+    /**
+     * Returns boards that represents transformation path
+     */
     Collection<Board> moves();
 
-    int heuristic();
+    /**
+     * Return neighbor-boards
+     */
+    Collection<Board> neighbors();
+
+    /**
+     * Return true if board is solvable and filled correctly.
+     * Otherwise return false
+     */
+    boolean isValid();
+
+    /**
+     * Check if current board is terminated
+     */
+    boolean isTerminated();
 }

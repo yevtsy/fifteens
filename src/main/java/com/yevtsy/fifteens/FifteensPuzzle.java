@@ -3,7 +3,6 @@ package com.yevtsy.fifteens;
 import com.yevtsy.fifteens.model.Board;
 import com.yevtsy.fifteens.model.NBoard;
 import com.yevtsy.fifteens.search.AStarEngine;
-import com.yevtsy.fifteens.search.SearchEngine;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -21,7 +20,7 @@ public class FifteensPuzzle {
         StringBuilder contentBuilder = new StringBuilder("\n");
         try (Stream<String> stream = Files.lines(Paths.get(FifteensPuzzle.class.getClassLoader()
                 .getResource("readme").getFile()), StandardCharsets.UTF_8)) {
-            stream.forEach(s -> contentBuilder.append(s).append("\n"));
+            stream.forEach(s -> contentBuilder.append(s).append('\n'));
         }
         System.out.println(contentBuilder);
 
@@ -43,8 +42,7 @@ public class FifteensPuzzle {
                 field[i] = Byte.parseByte(values[i]);
             }
 
-            SearchEngine engine = new AStarEngine();
-            final Collection<Board> transformations = engine.search(new NBoard(side, field));
+            final Collection<Board> transformations = new AStarEngine(new NBoard(side, field)).run();
             transformations.forEach(System.out::println);
         }
     }

@@ -3,7 +3,6 @@ package com.yevtsy.fifteens;
 import com.yevtsy.fifteens.model.Board;
 import com.yevtsy.fifteens.model.NBoard;
 import com.yevtsy.fifteens.search.AStarEngine;
-import com.yevtsy.fifteens.search.SearchEngine;
 import javaslang.Tuple2;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -14,8 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CorrectFifteenPuzzleTest extends FifteensPuzzleTest {
-
-    private SearchEngine search = new AStarEngine();
 
     @DataProvider(name = "correctBoards")
     Object[][] unresolvableBoards() {
@@ -50,7 +47,7 @@ public class CorrectFifteenPuzzleTest extends FifteensPuzzleTest {
     @Test(dataProvider = "correctBoards")
     public void unresolvableBoardTest(String path, Board terminated) throws IOException {
         final Tuple2<Byte, byte[]> board = parseBoard(path);
-        List<Board> transformations = new ArrayList<>(search.search(new NBoard(board._1, board._2)));
+        List<Board> transformations = new ArrayList<>(new AStarEngine(new NBoard(board._1, board._2)).run());
         Assert.assertEquals(transformations.get(transformations.size() - 1), terminated);
     }
 }

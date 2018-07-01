@@ -15,9 +15,17 @@ import java.util.Queue;
 public class AStarEngine implements SearchEngine {
 
     private static final int INF = 1_000;
+    private Int2IntMap heuristics;
+    private Board board;
+
+    public AStarEngine(Board board) {
+        this.board = board;
+        this.heuristics = new Int2IntOpenHashMap();
+        this.heuristics.defaultReturnValue(INF);
+    }
 
     @Override
-    public Collection<Board> search(Board board) {
+    public Collection<Board> run() {
         if (!board.isValid()) {
             throw new IllegalArgumentException("Board " + board + " has invalid data or cannot be solved");
         }
@@ -26,7 +34,7 @@ public class AStarEngine implements SearchEngine {
         gScore.put(board.hashCode(), 0);
 
         IntSet closed = new IntOpenHashSet();
-        Queue<Board> open = new PriorityQueue<>(Comparator.comparingInt(b -> gScore.getOrDefault(b.hashCode(), INF) + b.heuristic()));
+        Queue<Board> open = new PriorityQueue<>(Comparator.comparingInt(b -> gScore.getOrDefault(b.hashCode(), INF) + heuristic(b)));
         open.add(board);
 
         while (!open.isEmpty()) {
@@ -56,5 +64,30 @@ public class AStarEngine implements SearchEngine {
         }
 
         return Collections.emptyList();
+    }
+
+    @Override
+    public int heuristic(Board board) {
+        final int h = heuristics.get(board.hashCode());
+        if (h != INF) {
+            return h;
+        }
+
+        byte[] currentField = board.state();
+        final int sideSize = (int) Math.sqrt(currentField.length);
+
+        int heuristic = 0;
+        for (int i = 0; i < sideSize; i++) {
+            for (int j = 0; j < sideSize; j++) {
+                if (currentField[i * sideSize + j] == 0)
+                    continue;
+                int x = (currentField[i * sideSize + j] - 1) / sideSize;
+                int y = (currentField[i * sideSize + j] - 1) % sideSize;
+                heuristic += (Math.abs(x - i) + Math.abs(y - j));
+            }
+        }
+
+        heuristics.put(board.hashCode(), heuristic);
+        return heuristic;
     }
 }
