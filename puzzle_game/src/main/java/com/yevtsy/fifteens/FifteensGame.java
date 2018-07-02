@@ -10,8 +10,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
+import java.util.Arrays;
+import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 public class FifteensGame {
+
+    private static final List<String> VALID_MOVES = Arrays.stream(Move.values()).map(Move::toString).collect(toList());
 
     public static void main(String[] args) throws IOException {
         System.out.println(readme());
@@ -31,20 +37,27 @@ public class FifteensGame {
             out.println("Initial board:");
             out.println(board);
 
-            while (!board.isTerminated()) {
+            while (!game.isGameOver(board)) {
                 out.println("Enter the next move: ");
-                final Move nextMove = Move.valueOf(br.readLine()); // TODO : add validation here for correctness
+                String move = br.readLine();
+                Move nextMove = Move.parse(move);
+                while (nextMove == null) {
+                    out.println(move + " is not a valid movement. Please, choose valid one: " + VALID_MOVES);
+                    move = br.readLine();
+                    nextMove = Move.parse(move);
+                }
 
                 final Board current = board;
-                board = Try.of(() -> game.move(current, nextMove))
-                        .onFailure(e -> out.println(nextMove + " is not correct movement for this board. Please, try again"))
+                final Move next = nextMove;
+                board = Try.of(() -> game.move(current, next))
+                        .onFailure(e -> out.println(next + " is not correct movement for this board. Please, try again"))
                         .getOrElse(current);
 
-                out.println("Current state:");
+                out.println("\nCurrent state:");
                 out.println(board);
             }
 
-            out.println("Congratulations! You solved the puzzle");
+            out.println("\nCongratulations! You solved the puzzle");
         }
     }
 
