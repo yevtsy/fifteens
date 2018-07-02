@@ -1,0 +1,28 @@
+plugins {
+    id 'java'
+}
+
+version '1.0'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'org.projectlombok:lombok:1.18.0'
+    compile 'io.javaslang:javaslang:2.0.2'
+    compile 'it.unimi.dsi:fastutil:8.1.0'
+    testCompile 'org.testng:testng:6.11'
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'com.yevtsy.fifteens.FifteensPuzzle'
+    }
+}
+
+test {
+    useTestNG {}
+}

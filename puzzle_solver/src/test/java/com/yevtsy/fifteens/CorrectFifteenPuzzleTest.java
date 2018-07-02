@@ -33,11 +33,8 @@ public class CorrectFifteenPuzzleTest extends FifteensPuzzleTest {
                 {"boards/valid/puzzle10.txt", terminatedFourSide},
                 {"boards/valid/puzzle11.txt", terminatedFourSide},
                 {"boards/valid/puzzle12.txt", terminatedFourSide},
-//                {"boards/valid/puzzle13.txt", terminatedFourSide},
                 {"boards/valid/puzzle14.txt", terminatedFourSide},
-//                {"boards/valid/puzzle15.txt", terminatedFourSide},
                 {"boards/valid/puzzle16.txt", terminatedFourSide},
-//                {"boards/valid/puzzle04.txt", terminatedFourSide},
                 {"boards/valid/puzzle05.txt", terminatedFourSide},
 
                 {"boards/valid/puzzle17.txt", terminatedFiveSide},

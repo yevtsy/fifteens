@@ -1,2 +1,3 @@
-include 'sub'
+include 'puzzle_solver'
+include 'puzzle_game'
 
