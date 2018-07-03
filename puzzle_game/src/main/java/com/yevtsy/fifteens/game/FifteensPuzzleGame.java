@@ -4,26 +4,33 @@ import com.yevtsy.fifteens.board.Board;
 import com.yevtsy.fifteens.board.FifteensBoard;
 import com.yevtsy.fifteens.exception.IllegalMoveException;
 import com.yevtsy.fifteens.model.Move;
-import com.yevtsy.fifteens.utils.PuzzleUtils;
+import com.yevtsy.fifteens.rule.GameRule;
 
 import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.Random;
 
 public class FifteensPuzzleGame implements PuzzleGame {
+
     private static final Random random = new SecureRandom();
+    private GameRule rules;
+    private Board terminated;
+
+    public FifteensPuzzleGame(GameRule rules, int size) {
+        this.rules = rules;
+        this.terminated = new FifteensBoard(rules.terminatedState(size));
+    }
 
     @Override
-    public Board initialize(int sizeSide, int shuffle) {
-        byte[] initial = PuzzleUtils.init(sizeSide * sizeSide);
+    public Board shuffle(int shuffle) {
+        byte[] initial = terminated.state();
 
-        Board board;
+        byte[] shuffled;
         do {
-            byte[] shuffled = shuffleBoard(initial, shuffle);
-            board = new FifteensBoard(sizeSide, shuffled);
-        } while (!board.isSolvable());
+            shuffled = shuffleBoard(initial, shuffle);
+        } while (!rules.isValidState(shuffled));
 
-        return board;
+        return new FifteensBoard(shuffled);
     }
 
     @Override
@@ -33,7 +40,7 @@ public class FifteensPuzzleGame implements PuzzleGame {
 
     @Override
     public boolean isGameOver(Board board) {
-        return board.isTerminated();
+        return rules.isGameOver(board, terminated);
     }
 
     private byte[] shuffleBoard(byte[] initial, int shuffle) {

@@ -6,9 +6,23 @@ import com.yevtsy.fifteens.model.Move;
 
 public interface PuzzleGame {
 
-    Board initialize(int size, int shuffle);
+    /**
+     * Return shuffled initial state of puzzle
+     */
+    Board shuffle(int shuffle);
 
+    /**
+     * Return new board after movement
+     *
+     * @param board
+     * @param move
+     * @return new board after movement
+     * @throws IllegalMoveException if move is not valid
+     */
     Board move(Board board, Move move) throws IllegalMoveException;
 
+    /**
+     * Return true if game is over, false otherwise
+     */
     boolean isGameOver(Board board);
 }

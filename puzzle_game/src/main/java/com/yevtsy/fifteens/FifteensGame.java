@@ -4,6 +4,7 @@ import com.yevtsy.fifteens.board.Board;
 import com.yevtsy.fifteens.game.FifteensPuzzleGame;
 import com.yevtsy.fifteens.game.PuzzleGame;
 import com.yevtsy.fifteens.model.Move;
+import com.yevtsy.fifteens.rule.FifteensGameRule;
 import javaslang.control.Try;
 
 import java.io.BufferedReader;
@@ -31,21 +32,25 @@ public class FifteensGame {
             out.println("Enter the number of shuffles: ");
             int shuffles = Integer.parseInt(br.readLine());
 
-            PuzzleGame game = new FifteensPuzzleGame();
-            Board board = game.initialize(side, shuffles);
+            PuzzleGame game = new FifteensPuzzleGame(new FifteensGameRule(), side * side);
+            Board board = game.shuffle(shuffles);
 
             out.println("Initial board:");
             out.println(board);
 
             while (!game.isGameOver(board)) {
                 out.println("Enter the next move: ");
-                String move = br.readLine();
-                Move nextMove = Move.parse(move);
-                while (nextMove == null) {
-                    out.println(move + " is not a valid movement. Please, choose valid one: " + VALID_MOVES);
+
+                String move;
+                Move nextMove;
+                do {
                     move = br.readLine();
                     nextMove = Move.parse(move);
-                }
+
+                    if (nextMove == null) {
+                        out.println(move + " is not a valid movement. Please, choose valid one: " + VALID_MOVES);
+                    }
+                } while (nextMove == null);
 
                 final Board current = board;
                 final Move next = nextMove;
