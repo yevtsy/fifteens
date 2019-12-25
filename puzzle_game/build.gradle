@@ -14,7 +14,7 @@ dependencies {
     compile 'org.projectlombok:lombok:1.18.10'
     compile 'io.javaslang:javaslang:2.0.6'
     compile 'it.unimi.dsi:fastutil:8.3.0'
-    testCompile 'org.testng:testng:7.0.0'
+    testCompile 'org.testng:testng:7.1.0'
 }
 
 jar {
