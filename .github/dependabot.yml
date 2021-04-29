@@ -1,0 +1,17 @@
+version: 2
+updates:
+- package-ecosystem: gradle
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "03:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: it.unimi.dsi:fastutil
+    versions:
+    - 8.4.4
+    - 8.5.1
+    - 8.5.2
+  - dependency-name: org.projectlombok:lombok
+    versions:
+    - 1.18.18
